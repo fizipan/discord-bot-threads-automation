@@ -13,9 +13,12 @@ function getFormattedDateID() {
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] })
 
-client.once('ready', () => {
+client.once('ready', async () => {
     console.log(`✅ Bot is ready as ${client.user.tag}`)
-
+    
+    // Jalankan fungsi sekali saat bot pertama kali online
+    await createProgressThread()
+    
     // Setiap hari pukul 19:00 WIB
     cron.schedule('0 19 * * *', createProgressThread)
 })
@@ -51,6 +54,5 @@ async function createProgressThread() {
         console.error('❌ Gagal membuat thread:', err)
     }
 }
-
 
 client.login(process.env.DISCORD_TOKEN)
